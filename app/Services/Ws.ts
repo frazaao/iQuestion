@@ -19,7 +19,7 @@ class Ws {
       },
     })
     this.io.on('connection', callback)
-    this.isReady = true
+    this.isReady === false ? (this.isReady = true) : null
   }
 }
 
