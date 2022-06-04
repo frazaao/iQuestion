@@ -4,6 +4,7 @@ import Users from 'App/Models/Users'
 export default class UsersController {
   public async store({ request }: HttpContextContract) {
     const { email, name, username, password } = request.all()
+    console.log(request.all())
 
     const user = Users.create({ email, name, username, password })
 

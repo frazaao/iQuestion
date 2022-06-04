@@ -12,7 +12,9 @@ export default class AppProvider {
   }
 
   public async ready() {
-    if (this.app.environment === 'web') {
+    const App = await import('@ioc:Adonis/Core/Application')
+
+    if (App.default.environment === 'web') {
       await import('../start/socket')
     }
   }

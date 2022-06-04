@@ -1,20 +1,25 @@
-import { Server } from 'socket.io'
+import { Server, Socket } from 'socket.io'
 import AdonisServer from '@ioc:Adonis/Core/Server'
 
 class Ws {
   public io: Server
-  private booted = false
+  private isReady = false
 
-  public boot() {
-    /**
-     * Ignore multiple calls to the boot method
-     */
-    if (this.booted) {
-      return
-    }
-
-    this.booted = true
-    this.io = new Server(AdonisServer.instance!)
+  public start(callback: (socket: Socket) => void) {
+    this.io = new Server(AdonisServer.instance!, {
+      cors: {
+        origin: [
+          'http://localhost:3000',
+          'https://localhost:3000',
+          'https://localhost:5500',
+          'http://localhost:5500',
+        ],
+        allowedHeaders: ['*'],
+        credentials: true,
+      },
+    })
+    this.io.on('connection', callback)
+    this.isReady = true
   }
 }
 
