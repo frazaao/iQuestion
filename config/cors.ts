@@ -44,7 +44,7 @@ const corsConfig: CorsConfig = {
   |                     one of the above values.
   |
   */
-  origin: true,
+  origin: ['https://localhost:5500', 'http://localhost:5500'],
 
   /*
   |--------------------------------------------------------------------------
