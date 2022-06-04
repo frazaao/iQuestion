@@ -55,7 +55,7 @@ export default class RoomsController {
 
       return { message: 'Password do not match' }
     } else {
-      await room.load('questions', (questions) => questions.where('room_id', '=', room.uuid))
+      await room.load('questions')
 
       return room.questions
     }

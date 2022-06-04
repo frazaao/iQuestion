@@ -5,6 +5,8 @@ Route.get('/', async () => {
 })
 
 Route.resource('users', 'UsersController').apiOnly()
+Route.get('likes', 'UserLikesController.index')
+Route.post('likes', 'UserLikesController.store')
 Route.post('users/login', 'UsersController.login')
 Route.post('users/logout', 'UsersController.logout')
 
