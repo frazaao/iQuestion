@@ -2,6 +2,39 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Users from 'App/Models/Users'
 
 export default class UsersController {
+  /**
+   * @swagger
+   * /api/users:
+   * post:
+   *     tags:
+   *       - Users
+   *     requestBody:
+   *       required: true
+   *       content:
+   *         application/json:
+   *           description: User payload
+   *           schema:
+   *             type: object
+   *             properties:
+   *               phone:
+   *                 type: string
+   *                 example: 'James Bond'
+   *                 required: true
+   *               email:
+   *                 type: string
+   *                 example: 'Bond007@example.com'
+   *                 required: true
+   *     produces:
+   *       - application/json
+   *     responses:
+   *       200:
+   *         description: Success
+   *         content:
+   *           application/json:
+   *             schema:
+   *               $ref: '#/components/schemas/User'
+   */
+
   public async store({ request }: HttpContextContract) {
     const { email, name, username, password } = request.all()
     console.log(request.all())

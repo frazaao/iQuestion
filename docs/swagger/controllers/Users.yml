@@ -1,0 +1,62 @@
+components:
+	securitySchemes:
+		bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+
+/users:
+  post:
+    tags:
+      - Users
+    security: []
+    description: CreateUser
+    parameters:
+      - name: CreateUser
+        in: body
+        required: true
+        schema:
+          properties:
+            email:
+              type: string
+              example: 'jhon@doe.com'
+              required: true
+            username:
+              type: string
+              example: 'jhondoe'
+              required: true
+            name:
+              type: string
+              example: 'Jhon Doe'
+              required: true
+            password:
+              type: string
+              example: 'Jhon_doe123'
+              required: true
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Create a new User and returns it
+
+/users/{userId}:
+  get:
+    tags:
+      - Users
+    security: []
+    description: ShowUser
+    parameters:
+      - name: ShowUser
+        in: path
+        required: true
+        schema:
+          properties:
+            email:
+              type: string
+              example: 'jhon@doe.com'
+              required: true
+    produces:
+      - application/json
+    responses:
+      200:
+        description: Create a new User and returns it
