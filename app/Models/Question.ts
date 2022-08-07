@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
-
+import { BaseModel, column, afterCreate } from '@ioc:Adonis/Lucid/Orm'
+import Ws from 'App/Services/Ws'
 export default class Question extends BaseModel {
   @column({ isPrimary: true })
   public id: string
@@ -36,4 +36,14 @@ export default class Question extends BaseModel {
     },
   })
   public updatedAt: DateTime
+
+  @afterCreate()
+  public static dispathMessage(question) {
+    Ws.io.to(`room-${question.roomUuid}`).emit('newMessage', {
+      id: question.id,
+      content: question.content,
+      qtd_likes: question.qtd_likes,
+      is_read: question.is_read,
+    })
+  }
 }
