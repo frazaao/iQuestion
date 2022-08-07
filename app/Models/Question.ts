@@ -41,13 +41,13 @@ export default class Question extends BaseModel {
   public static dispathMessage(question) {
     Ws.io.to(`room-${question.roomUuid}`).emit('newMessage', {
       content: question.content,
-      created_at: question.created_at,
+      created_at: question.createdAt,
       id: question.id,
-      is_read: question.is_read,
-      qtd_likes: question.qtd_likes,
-      room_uuid: question.room_uuid,
-      updated_at: question.updated_at,
-      user_id: question.user_id,
+      is_read: question.isRead,
+      qtd_likes: question.qtdLikes,
+      room_uuid: question.roomUuid,
+      updated_at: question.updatedAt,
+      user_id: question.userId,
     })
   }
 }
