@@ -1,6 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, afterCreate } from '@ioc:Adonis/Lucid/Orm'
-import Ws from 'App/Services/Ws'
+import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+// import Ws from 'App/Services/Ws'
 export default class Question extends BaseModel {
   @column({ isPrimary: true })
   public id: string
