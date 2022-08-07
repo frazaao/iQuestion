@@ -1,5 +1,5 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, afterCreate, afterSave } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, afterCreate, afterSave, afterDelete } from '@ioc:Adonis/Lucid/Orm'
 import Ws from 'App/Services/Ws'
 import Users from 'App/Models/Users'
 export default class Question extends BaseModel {
@@ -53,6 +53,13 @@ export default class Question extends BaseModel {
   @afterSave()
   public static dispatchRead(question) {
     Ws.io.to(`room-${question.roomUuid}`).emit('readMessage', {
+      ...question,
+    })
+  }
+
+  @afterDelete()
+  public static dispatchDelete(question) {
+    Ws.io.to(`room-${question.roomUuid}`).emit('deleteMessage', {
       ...question,
     })
   }

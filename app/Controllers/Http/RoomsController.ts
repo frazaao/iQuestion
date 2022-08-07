@@ -3,7 +3,6 @@ import { v4 as uuidv4 } from 'uuid'
 import Hash from '@ioc:Adonis/Core/Hash'
 import Room from 'App/Models/Room'
 import Question from 'App/Models/Question'
-import Users from 'App/Models/Users'
 
 export default class RoomsController {
   public async store({ request, auth }: HttpContextContract) {
@@ -58,12 +57,7 @@ export default class RoomsController {
     } else {
       await room.load('questions')
 
-      const questions = room.questions.map(async (question) => {
-        const user = await Users.find(question.userId)
-        return { ...question, user: user }
-      })
-
-      return questions
+      return room.questions
     }
   }
 
