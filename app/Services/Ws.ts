@@ -8,12 +8,7 @@ class Ws {
   public start(callback: (socket: Socket) => void) {
     this.io = new Server(AdonisServer.instance!, {
       cors: {
-        origin: [
-          'http://localhost:3000',
-          'https://localhost:3000',
-          'https://localhost:5500',
-          'http://localhost:5500',
-        ],
+        origin: true,
         allowedHeaders: ['*'],
         credentials: true,
       },
