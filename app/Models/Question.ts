@@ -1,6 +1,7 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column, afterCreate } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, column, afterCreate, afterSave } from '@ioc:Adonis/Lucid/Orm'
 import Ws from 'App/Services/Ws'
+import Users from 'App/Models/Users'
 export default class Question extends BaseModel {
   @column({ isPrimary: true })
   public id: string
@@ -36,6 +37,7 @@ export default class Question extends BaseModel {
 
   @afterCreate()
   public static dispathMessage(question) {
+    const user = Users.find(question.userId)
     Ws.io.to(`room-${question.roomUuid}`).emit('newMessage', {
       content: question.content,
       created_at: question.createdAt,
@@ -44,7 +46,14 @@ export default class Question extends BaseModel {
       qtd_likes: question.qtdLikes,
       room_uuid: question.roomUuid,
       updated_at: question.updatedAt,
-      user_id: question.userId,
+      user_id: user,
+    })
+  }
+
+  @afterSave()
+  public static dispatchRead(question) {
+    Ws.io.to(`room-${question.roomUuid}`).emit('readMessage', {
+      ...question,
     })
   }
 }

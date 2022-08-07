@@ -3,6 +3,7 @@ import { v4 as uuidv4 } from 'uuid'
 import Hash from '@ioc:Adonis/Core/Hash'
 import Room from 'App/Models/Room'
 import Question from 'App/Models/Question'
+import Users from 'App/Models/Users'
 
 export default class RoomsController {
   public async store({ request, auth }: HttpContextContract) {
@@ -57,7 +58,12 @@ export default class RoomsController {
     } else {
       await room.load('questions')
 
-      return room.questions
+      const questions = room.questions.map(async (question) => {
+        const user = await Users.find(question.userId)
+        return { ...question, user: user }
+      })
+
+      return questions
     }
   }
 
@@ -86,6 +92,37 @@ export default class RoomsController {
       })
 
       return question
+    }
+  }
+
+  public async readQuestions({ request, response, auth }: HttpContextContract) {
+    const { password, questionId } = request.all()
+
+    const uuid = request.params().id
+
+    const user = await auth.authenticate()
+
+    const room = await Room.findOrFail(uuid)
+
+    if (user.id !== room.userId) {
+      response.unauthorized()
+    }
+
+    const hashPassword = password === '' ? '' : await Hash.verify(room.password, password)
+
+    if (hashPassword === false) {
+      response.status(401)
+
+      return { message: 'Password do not match' }
+    } else {
+      const question = await Question.find(questionId)
+      if (question) {
+        question.isRead = true
+        question.save()
+        return response.status(200)
+      } else {
+        return response.status(404)
+      }
     }
   }
 }
