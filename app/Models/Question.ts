@@ -22,9 +22,6 @@ export default class Question extends BaseModel {
 
   @column.dateTime({
     autoCreate: true,
-    serialize: (value: DateTime) => {
-      return value.toFormat('dd/MM/yy')
-    },
   })
   public createdAt: DateTime
 
